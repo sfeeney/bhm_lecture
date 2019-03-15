@@ -7,3 +7,5 @@ Guest lectures on Bayesian Hierarchical modeling delivered as part of David Hogg
 This code has been tested in Python 2.7.15 and 3.6.8. It requires the following dependencies:
 
 jupyter, numpy, matplotlib, scipy (stats), [corner](https://github.com/sfeeney/bhm_lecture.git), [pystan](https://pystan.readthedocs.io/en/latest/getting_started.html), pickle.
+
+Running `bhm_plot.py` also requires [daft](http://daft-pgm.org/).
