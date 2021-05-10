@@ -166,6 +166,7 @@ pgm.figure.text(4.5 / 5.25, (data_level - 0.25) / 7.25, \
 				'$' + m_obs_sig + '$', ha='center')
 pgm.figure.savefig('bhm_plot.pdf')
 
+
 # no PDFs version
 # create figure
 pgm = daft.PGM([5.25, 7.25], origin=[-0.5, 0.0], observed_style="inner")
@@ -241,6 +242,115 @@ pgm.add_plate(daft.Plate([-0.25, data_level - 0.6, 4.7, \
 pgm.render()
 pgm.figure.text(4.25 / 5.25, (obj_level - 0.25) / 7.25, '$' + log_p + '$')
 pgm.figure.savefig('bhm_plot_no_pdfs.pdf')
+
+
+# version with no PDFs or fixed parameters bar the intrinsic scatter and periods
+# create figure
+pgm = daft.PGM([5.25, 7.25], origin=[-0.5, 0.0], observed_style="inner")
+
+# population-prior parameters
+# empty!
+
+# population-level parameters
+pgm.add_node(daft.Node('abs_mag', '$' + abs_mag + '$', 2.0, pop_level))
+pgm.add_node(daft.Node('m_sig_int', '$' + m_sig_int + '$', 3.0, pop_level, \
+					   fixed=True))
+pgm.add_node(daft.Node('slope', '$' + slope + '$', 4.0, pop_level))
+
+# object-level parameters
+pgm.add_node(daft.Node('mu_true_i', '$' + mu_true + '$', \
+					   1.0, obj_level))
+pgm.add_node(daft.Node('m_true_ij', '$' + m_true + '$', \
+					   3.0, obj_level))
+pgm.add_node(daft.Node('lp_ij', '', 4.0, \
+					   obj_level, fixed=True))
+
+# observables
+pgm.add_node(daft.Node('mu_obs_i', '$' + mu_obs + '$', 1.0, data_level, \
+					   observed=True))
+pgm.add_node(daft.Node('m_obs_ij', '$' + m_obs + '$', 3.0, data_level, \
+					   observed=True))
+
+# edges
+pgm.add_edge('abs_mag', 'm_true_ij')
+pgm.add_edge('m_sig_int', 'm_true_ij')
+pgm.add_edge('slope', 'm_true_ij')
+pgm.add_edge('mu_true_i', 'm_true_ij')
+pgm.add_edge('lp_ij', 'm_true_ij')
+pgm.add_edge('mu_true_i', 'mu_obs_i')
+pgm.add_edge('m_true_ij', 'm_obs_ij')
+
+# object plate
+pgm.add_plate(daft.Plate([1.65, data_level - 0.5, 2.7, \
+						  pop_level - data_level], \
+						  label=r"$1 \le j \le n_{\rm star}$", \
+						  shift=-0.0, rect_params={"ec": "r"}, \
+						  label_offset=(2, 2)))
+pgm.add_plate(daft.Plate([-0.25, data_level - 0.6, 4.7, \
+						  pop_level - data_level + 0.2], \
+						  label=r"$1 \le i \le n_{\rm gal}$", \
+						  shift=-0.0, rect_params={"ec": "r"}, \
+						  label_offset=(2, 2)))
+
+# render and save
+pgm.render()
+pgm.figure.text(4.25 / 5.25, (obj_level - 0.25) / 7.25, '$' + log_p + '$')
+pgm.figure.savefig('bhm_plot_no_pdfs_minimal.pdf')
+
+
+# version with no PDFs or fixed parameters bar the intrinsic scatter and 
+# periods, to be filled in
+# create figure
+pgm = daft.PGM([5.25, 7.25], origin=[-0.5, 0.0], observed_style="inner")
+
+# population-prior parameters
+# empty!
+
+# population-level parameters
+pgm.add_node(daft.Node('abs_mag', ' ', 2.0, pop_level))
+pgm.add_node(daft.Node('m_sig_int', ' ', 3.0, pop_level, \
+					   fixed=True))
+pgm.add_node(daft.Node('slope', ' ', 4.0, pop_level))
+
+# object-level parameters
+pgm.add_node(daft.Node('mu_true_i', ' ', \
+					   1.0, obj_level))
+pgm.add_node(daft.Node('m_true_ij', ' ', \
+					   3.0, obj_level))
+pgm.add_node(daft.Node('lp_ij', '', 4.0, \
+					   obj_level, fixed=True))
+
+# observables
+pgm.add_node(daft.Node('mu_obs_i', ' ', 1.0, data_level, \
+					   observed=True))
+pgm.add_node(daft.Node('m_obs_ij', ' ', 3.0, data_level, \
+					   observed=True))
+
+# edges
+pgm.add_edge('abs_mag', 'm_true_ij')
+pgm.add_edge('m_sig_int', 'm_true_ij')
+pgm.add_edge('slope', 'm_true_ij')
+pgm.add_edge('mu_true_i', 'm_true_ij')
+pgm.add_edge('lp_ij', 'm_true_ij')
+pgm.add_edge('mu_true_i', 'mu_obs_i')
+pgm.add_edge('m_true_ij', 'm_obs_ij')
+
+# object plate
+pgm.add_plate(daft.Plate([1.65, data_level - 0.5, 2.7, \
+						  pop_level - data_level], \
+						  label=r"$1 \le j \le n_{\rm star}$", \
+						  shift=-0.0, rect_params={"ec": "r"}, \
+						  label_offset=(2, 2)))
+pgm.add_plate(daft.Plate([-0.25, data_level - 0.6, 4.7, \
+						  pop_level - data_level + 0.2], \
+						  label=r"$1 \le i \le n_{\rm gal}$", \
+						  shift=-0.0, rect_params={"ec": "r"}, \
+						  label_offset=(2, 2)))
+
+# render and save
+pgm.render()
+pgm.figure.text(4.25 / 5.25, (obj_level - 0.25) / 7.25, ' ')
+pgm.figure.savefig('bhm_plot_no_pdfs_minimal_fill_me_in.pdf')
 
 
 # very simple Gaussian version
